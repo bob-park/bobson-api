@@ -7,4 +7,6 @@ public interface BobSonApiClient {
 
     EventResponse push(CreateEventRequest pushData);
 
+    EventResponse fetch(String eventName);
+
 }

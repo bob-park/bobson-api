@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +30,8 @@ import org.bobpark.bobsonclient.configure.condition.BobsonClientCondition;
 import org.bobpark.bobsonclient.configure.properties.BobsonClientProperties;
 import org.bobpark.bobsonclient.event.client.BobSonApiClient;
 import org.bobpark.bobsonclient.event.client.impl.DefaultEventStoreApiClient;
-import org.bobpark.bobsonclient.event.manager.EventCommandManager;
+import org.bobpark.bobsonclient.event.manager.EventManager;
+import org.bobpark.bobsonclient.event.manager.EventManagerFactory;
 
 @RequiredArgsConstructor
 @AutoConfiguration
@@ -38,6 +40,7 @@ import org.bobpark.bobsonclient.event.manager.EventCommandManager;
 public class BobsonClientAutoConfiguration {
 
     private final BobsonClientProperties properties;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Bean
     public RestTemplate bobsonClientRestTemplate() {
@@ -77,8 +80,13 @@ public class BobsonClientAutoConfiguration {
     }
 
     @Bean
-    public EventCommandManager eventCommandManager(ObjectMapper om) {
-        return new EventCommandManager(om, properties, bobSonApiClient());
+    public EventManager eventCommandManager(ObjectMapper om) {
+        return EventManagerFactory.builder()
+            .objectMapper(om)
+            .properties(properties)
+            .apiClient(bobSonApiClient())
+            .eventPublisher(eventPublisher)
+            .build();
     }
 
 }

@@ -21,6 +21,7 @@ import org.bobpark.bobsonclient.event.exception.FailedPushEventException;
 public class DefaultEventStoreApiClient implements BobSonApiClient {
 
     private static final String PUSH_API = "/event";
+    private static final String FETCH_API = "/event/fetch/{eventName}";
 
     private final BobsonClientProperties properties;
     private final RestTemplate restTemplate;
@@ -32,10 +33,30 @@ public class DefaultEventStoreApiClient implements BobSonApiClient {
 
         RequestEntity<DefaultCreateEventRequest> requestEntity =
             RequestEntity.post(properties.getHost() + PUSH_API)
-                // .contentType(MediaType.APPLICATION_JSON)
-                // .accept(MediaType.APPLICATION_JSON)
                 .body(createRequest);
 
+        DefaultEventResponse body = request(requestEntity);
+
+        log.debug("pushed event data. (id={})", body.getId());
+
+        return body;
+    }
+
+    @Override
+    public EventResponse fetch(String eventName) {
+
+        RequestEntity<Void> requestEntity =
+            RequestEntity.get(FETCH_API, eventName)
+                .build();
+
+        DefaultEventResponse body = request(requestEntity);
+
+        log.debug("fetch event. (id={})", body.getId());
+
+        return body;
+    }
+
+    private DefaultEventResponse request(RequestEntity<?> requestEntity) {
         ResponseEntity<DefaultEventResponse> response = restTemplate.exchange(requestEntity,
             DefaultEventResponse.class);
 
@@ -43,11 +64,7 @@ public class DefaultEventStoreApiClient implements BobSonApiClient {
             throw new FailedPushEventException();
         }
 
-        DefaultEventResponse body = response.getBody();
-
-        log.debug("pushed event data. (id={})", body.getId());
-
-        return body;
+        return response.getBody();
     }
 
 }
