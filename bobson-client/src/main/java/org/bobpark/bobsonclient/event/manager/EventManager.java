@@ -63,7 +63,7 @@ public class EventManager {
 
         CreateEventRequest createEventRequest =
             DefaultCreateEventRequest.builder()
-                .eventName(commandHandler.eventName())
+                .eventName(commandHandler.value())
                 .createdModuleName(properties.getInstanceId())
                 .eventData(parseToMap(eventCommand))
                 .build();

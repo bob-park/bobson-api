@@ -11,9 +11,9 @@ import org.springframework.core.annotation.AliasFor;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CommandHandler {
 
-    @AliasFor("eventName")
-    String value();
+    @AliasFor("name")
+    String value() default "";
 
     @AliasFor("value")
-    String eventName() default "";
+    String name() default "";
 }
