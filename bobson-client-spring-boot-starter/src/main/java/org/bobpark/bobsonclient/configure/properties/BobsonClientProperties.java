@@ -35,7 +35,7 @@ public class BobsonClientProperties {
     private Long fetchTimeMs = 1_000L;
 
     public BobsonClientProperties() {
-        this.host = "http://localhost:9090";
+        this.host = "http://localhost:8080";
         this.instanceId = UUID.randomUUID().toString();
     }
 }
