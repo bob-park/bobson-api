@@ -17,7 +17,7 @@ import org.bobpark.bobsonclient.event.exception.FailedPushEventException;
 
 @Slf4j
 @RequiredArgsConstructor
-public class DefaultEventStoreApiClient implements BobSonApiClient<DefaultCreateEventRequest, DefaultEventResponse> {
+public class DefaultEventStoreApiClient implements BobSonApiClient {
 
     private static final String PUSH_API = "/event";
 
@@ -25,11 +25,13 @@ public class DefaultEventStoreApiClient implements BobSonApiClient<DefaultCreate
     private final RestTemplate restTemplate;
 
     @Override
-    public DefaultEventResponse push(DefaultCreateEventRequest pushData) {
+    public EventResponse push(CreateEventRequest pushData) {
+
+        DefaultCreateEventRequest createRequest = (DefaultCreateEventRequest)pushData;
 
         RequestEntity<DefaultCreateEventRequest> requestEntity =
             RequestEntity.post(properties.getHost() + PUSH_API)
-                .body(pushData);
+                .body(createRequest);
 
         ResponseEntity<DefaultEventResponse> response = restTemplate.exchange(requestEntity,
             DefaultEventResponse.class);

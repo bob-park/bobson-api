@@ -1,0 +1,6 @@
+
+bobson:
+  client:
+    enabled: off
+    host: http://localhost:9090
+    instance-id: ${random.uuid}
