@@ -10,6 +10,6 @@ services:
       logs_level: debug
       logs_path: /root/app/logs
     ports:
-      - "8888:8888"
+      - "9090:8080"
     volumes:
       - ./bobson-server-api:/root/app

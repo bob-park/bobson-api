@@ -25,7 +25,9 @@ management:
 ## spring
 spring:
   application:
-    name: event-store-service
+    name: bobson-server-api
+  main:
+    banner-mode: log
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${database_host}/${database_name}
