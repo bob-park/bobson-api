@@ -17,7 +17,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -79,11 +78,12 @@ public class EventManager {
     public Object fetchEvent(ProceedingJoinPoint joinPoint, EventSourcingHandler eventSourcingHandler) throws
         Throwable {
 
+        Object retVal = null;
         Object[] args = joinPoint.getArgs();
 
         if (args.length == 0) {
             log.warn("No event mapping class.");
-            return null;
+            return retVal;
         }
 
         String eventName = eventSourcingHandler.value().getSimpleName();
@@ -93,16 +93,31 @@ public class EventManager {
         EventResponse eventResponse = apiClient.fetch(eventName);
 
         if (isEmpty(eventResponse) || StringUtils.isBlank(eventResponse.getId())) {
-            return null;
+            log.warn("No event.");
+            return retVal;
         }
 
         event = castEvent(eventResponse.getEventData(), event.getClass());
+        args[0] = event;
 
         eventPublisher.publishEvent(event);
 
         log.debug("fetch event. (id={}, eventName={})", eventResponse.getId(), eventResponse.getEventName());
 
-        return joinPoint.proceed();
+        boolean isSuccess = false;
+        String message = null;
+
+        try {
+            retVal = joinPoint.proceed(args);
+            isSuccess = true;
+        } catch (Exception e) {
+            message = e.getMessage();
+            throw new ServiceRuntimeException(e);
+        } finally {
+            apiClient.complete(eventResponse.getId(), isSuccess, message);
+        }
+
+        return retVal;
     }
 
     private Map<String, Object> parseToMap(Object obj) {

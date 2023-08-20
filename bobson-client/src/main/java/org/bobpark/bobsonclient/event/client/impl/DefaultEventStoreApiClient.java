@@ -1,6 +1,8 @@
 package org.bobpark.bobsonclient.event.client.impl;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ public class DefaultEventStoreApiClient implements BobSonApiClient {
 
     private static final String PUSH_API = "/event";
     private static final String FETCH_API = "/event/fetch";
+    private static final String COMPLETE_API = "/event/complete/{eventId}";
 
     private final BobsonClientProperties properties;
     private final RestTemplate restTemplate;
@@ -55,6 +58,21 @@ public class DefaultEventStoreApiClient implements BobSonApiClient {
 
         return request(requestEntity);
 
+    }
+
+    @Override
+    public EventResponse complete(String eventId, boolean isSuccess, String detailMessage) {
+
+        Map<String, Object> body = new HashMap<>();
+
+        body.put("isSuccess", isSuccess);
+        body.put("message", detailMessage);
+
+        RequestEntity<Map<String, Object>> requestEntity =
+            RequestEntity.put(includeUri(COMPLETE_API), eventId)
+                .body(body);
+
+        return request(requestEntity);
     }
 
     private DefaultEventResponse request(RequestEntity<?> requestEntity) {

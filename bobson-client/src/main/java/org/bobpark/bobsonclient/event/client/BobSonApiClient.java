@@ -9,4 +9,6 @@ public interface BobSonApiClient {
 
     EventResponse fetch(String eventName);
 
+    EventResponse complete(String eventId, boolean isSuccess, String detailMessage);
+
 }
