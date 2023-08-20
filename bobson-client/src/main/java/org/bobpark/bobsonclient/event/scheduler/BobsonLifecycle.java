@@ -72,7 +72,7 @@ public class BobsonLifecycle {
         }
     }
 
-    @Scheduled(fixedDelayString = "${bobson.client.fetch-time-ms}")
+    @Scheduled(fixedDelayString = "${bobson.client.fetch-time-ms:1000}")
     public void executeEvent() throws Exception {
         for (Entry<String, Method> entry : EVENT_TARGET_MAP.entrySet()) {
 

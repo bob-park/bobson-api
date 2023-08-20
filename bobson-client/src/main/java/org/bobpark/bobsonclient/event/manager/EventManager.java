@@ -63,7 +63,7 @@ public class EventManager {
 
         CreateEventRequest createEventRequest =
             DefaultCreateEventRequest.builder()
-                .eventName(eventCommand.getClass().getSimpleName())
+                .eventName(commandHandler.eventName())
                 .createdModuleName(properties.getInstanceId())
                 .eventData(parseToMap(eventCommand))
                 .build();
@@ -86,9 +86,17 @@ public class EventManager {
             return retVal;
         }
 
-        String eventName = eventSourcingHandler.value().getSimpleName();
-
         Object event = args[0];
+
+        String eventName = null;
+
+        Class<?>[] events = eventSourcingHandler.classes();
+
+        if (events.length > 0) {
+            eventName = events[0].getSimpleName();
+        } else {
+            eventName = event.getClass().getSimpleName();
+        }
 
         EventResponse eventResponse = apiClient.fetch(eventName);
 

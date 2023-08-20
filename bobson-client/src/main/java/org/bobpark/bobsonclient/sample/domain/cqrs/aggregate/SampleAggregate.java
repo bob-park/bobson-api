@@ -11,7 +11,7 @@ import org.bobpark.bobsonclient.sample.domain.cqrs.event.CreatedSampleEvent;
 @Component
 public class SampleAggregate {
 
-    @EventSourcingHandler(CreatedSampleEvent.class)
+    @EventSourcingHandler
     public void handleCreatedSample(CreatedSampleEvent createdEvent) {
 
         log.debug("created event. ({})", createdEvent);

@@ -5,10 +5,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.springframework.core.annotation.AliasFor;
+
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EventSourcingHandler {
 
-    Class<?> value();
+    @AliasFor("classes")
+    Class<?>[] value() default {};
+
+    @AliasFor("value")
+    Class<?>[] classes() default {};
 
 }
