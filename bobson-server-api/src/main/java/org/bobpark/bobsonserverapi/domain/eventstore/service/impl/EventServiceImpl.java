@@ -12,8 +12,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.base.Preconditions;
-
 import io.micrometer.common.util.StringUtils;
 
 import org.bobpark.bobsonserverapi.common.type.EventStatus;
