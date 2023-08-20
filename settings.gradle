@@ -1,4 +1,4 @@
 rootProject.name = 'bobson-api'
 
 include 'bobson-server-api'
-include 'bobson-client'
+include 'bobson-client-spring-boot-starter'
