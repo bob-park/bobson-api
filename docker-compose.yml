@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  bobson-server-api:
+    container_name: bobson-server-api
+    image: ghcr.io/bob-park/bobson-api/bobson-server-api
+    platform: linux/amd64
+    build: ./bobson-server-api
+    environment:
+      logs_level: debug
+      logs_path: /root/app/logs
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./bobson-server-api:/root/app
