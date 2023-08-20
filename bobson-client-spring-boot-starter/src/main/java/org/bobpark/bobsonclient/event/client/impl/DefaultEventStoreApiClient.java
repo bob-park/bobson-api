@@ -16,8 +16,10 @@ import org.bobpark.bobsonclient.configure.properties.BobsonClientProperties;
 import org.bobpark.bobsonclient.event.client.BobSonApiClient;
 import org.bobpark.bobsonclient.event.client.model.CreateEventRequest;
 import org.bobpark.bobsonclient.event.client.model.EventResponse;
+import org.bobpark.bobsonclient.event.client.model.FetchEventRequest;
 import org.bobpark.bobsonclient.event.client.model.impl.DefaultCreateEventRequest;
 import org.bobpark.bobsonclient.event.client.model.impl.DefaultEventResponse;
+import org.bobpark.bobsonclient.event.client.model.impl.DefaultFetchEventRequest;
 import org.bobpark.bobsonclient.event.exception.FailedPushEventException;
 
 @Slf4j
@@ -49,6 +51,7 @@ public class DefaultEventStoreApiClient implements BobSonApiClient {
         URI uri =
             UriComponentsBuilder.fromUriString(includeUri(FETCH_API))
                 .queryParam("eventName", eventName)
+                .queryParam("moduleName", properties.getInstanceId())
                 .build()
                 .toUri();
 

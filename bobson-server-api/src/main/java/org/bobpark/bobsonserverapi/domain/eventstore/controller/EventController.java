@@ -33,8 +33,9 @@ public class EventController {
     }
 
     @GetMapping(path = "fetch")
-    public EventResponse fetch(@RequestParam("eventName") String eventName) {
-        return eventService.fetch(eventName);
+    public EventResponse fetch(@RequestParam("eventName") String eventName,
+        @RequestParam("moduleName") String moduleName) {
+        return eventService.fetch(eventName, moduleName);
     }
 
     @PutMapping(path = "complete/{eventId}")

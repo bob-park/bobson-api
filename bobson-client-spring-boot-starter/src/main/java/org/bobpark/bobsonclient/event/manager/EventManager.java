@@ -30,6 +30,7 @@ import org.bobpark.bobsonclient.event.annotation.EventSourcingHandler;
 import org.bobpark.bobsonclient.event.client.BobSonApiClient;
 import org.bobpark.bobsonclient.event.client.model.CreateEventRequest;
 import org.bobpark.bobsonclient.event.client.model.EventResponse;
+import org.bobpark.bobsonclient.event.client.model.FetchEventRequest;
 import org.bobpark.bobsonclient.event.client.model.impl.DefaultCreateEventRequest;
 import org.bobpark.core.exception.ServiceRuntimeException;
 

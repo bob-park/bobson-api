@@ -62,7 +62,7 @@ public class EventServiceImpl implements EventService {
 
     @Transactional
     @Override
-    public EventResponse fetch(String eventName) {
+    public EventResponse fetch(String eventName, String moduleName) {
 
         String currentIpAddress = IpAddressUtils.getIpAddress();
 
@@ -74,7 +74,7 @@ public class EventServiceImpl implements EventService {
 
         Event event = eventOpt.get();
 
-        event.fetch(eventName, currentIpAddress);
+        event.fetch(moduleName, currentIpAddress);
 
         return toResponse(event);
     }
