@@ -1,5 +1,8 @@
 package org.bobpark.bobsonserverapi.domain.eventstore.service.impl;
 
+import static com.google.common.base.Preconditions.*;
+import static org.apache.commons.lang3.ObjectUtils.*;
+
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
@@ -8,6 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.base.Preconditions;
+
+import io.micrometer.common.util.StringUtils;
 
 import org.bobpark.bobsonserverapi.common.type.EventStatus;
 import org.bobpark.bobsonserverapi.common.utils.IpAddressUtils;
@@ -32,6 +39,10 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventResponse createEvent(CreateEventRequest createRequest) {
+
+        checkArgument(StringUtils.isNotBlank(createRequest.eventName()), "eventName must be provided.");
+        checkArgument(isNotEmpty(createRequest.eventData()), "eventData must be provided.");
+        checkArgument(isNotEmpty(createRequest.createdModuleName()), "createdModuleName must be provided.");
 
         CreatedEvent createdEvent =
             CreatedEvent.builder()
