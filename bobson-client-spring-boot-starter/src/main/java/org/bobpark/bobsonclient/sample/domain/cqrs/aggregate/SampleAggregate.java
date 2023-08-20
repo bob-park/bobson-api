@@ -2,14 +2,13 @@ package org.bobpark.bobsonclient.sample.domain.cqrs.aggregate;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.stereotype.Component;
-
+import org.bobpark.bobsonclient.event.annotation.Aggregate;
 import org.bobpark.bobsonclient.event.annotation.CommandHandler;
 import org.bobpark.bobsonclient.event.annotation.EventSourcingHandler;
 import org.bobpark.bobsonclient.sample.domain.cqrs.event.CreatedSampleEvent;
 
 @Slf4j
-@Component
+@Aggregate
 public class SampleAggregate {
 
     @CommandHandler("CreatedSampleEvent")

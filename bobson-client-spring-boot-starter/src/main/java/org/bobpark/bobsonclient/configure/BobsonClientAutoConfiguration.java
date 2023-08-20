@@ -34,7 +34,7 @@ import org.bobpark.bobsonclient.event.client.BobSonApiClient;
 import org.bobpark.bobsonclient.event.client.impl.DefaultEventStoreApiClient;
 import org.bobpark.bobsonclient.event.manager.EventManager;
 import org.bobpark.bobsonclient.event.manager.EventManagerFactory;
-import org.bobpark.bobsonclient.event.scheduler.BobsonLifecycle;
+import org.bobpark.bobsonclient.event.lifecycle.BobsonLifecycle;
 
 @RequiredArgsConstructor
 @AutoConfiguration

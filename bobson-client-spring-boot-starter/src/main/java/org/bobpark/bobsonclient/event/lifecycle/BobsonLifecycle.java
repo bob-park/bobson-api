@@ -1,4 +1,4 @@
-package org.bobpark.bobsonclient.event.scheduler;
+package org.bobpark.bobsonclient.event.lifecycle;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -15,12 +15,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.ReflectionUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.bobpark.bobsonclient.event.annotation.Aggregate;
 import org.bobpark.bobsonclient.event.annotation.EventSourcingHandler;
 
 @Slf4j
@@ -34,10 +36,7 @@ public class BobsonLifecycle {
     @PostConstruct
     public void init() {
 
-        List<String> beanNames =
-            Arrays.stream(applicationContext.getBeanDefinitionNames())
-                .filter(beanName -> !StringUtils.equalsIgnoreCase(beanName, "lifecycle"))
-                .toList();
+        String[] beanNames = applicationContext.getBeanNamesForAnnotation(Aggregate.class);
 
         for (String beanName : beanNames) {
 
