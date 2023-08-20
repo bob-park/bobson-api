@@ -1,6 +1,18 @@
-
 bobson:
   client:
-    enabled: off
+    enabled: on
     host: http://localhost:9090
     instance-id: ${random.uuid}
+    fetch-time-ms: 1000
+
+
+## logging
+logging:
+  charset:
+    console: UTF-8
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:%-5p} ${PID} --- [%15.15t] %-40.40logger{39} :%06L : %m%n"
+  level:
+    root: info
+    web: debug
+    org.bobpark: debug
