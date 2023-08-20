@@ -10,12 +10,14 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -32,13 +34,16 @@ import org.bobpark.bobsonclient.event.client.BobSonApiClient;
 import org.bobpark.bobsonclient.event.client.impl.DefaultEventStoreApiClient;
 import org.bobpark.bobsonclient.event.manager.EventManager;
 import org.bobpark.bobsonclient.event.manager.EventManagerFactory;
+import org.bobpark.bobsonclient.event.scheduler.BobsonLifecycle;
 
 @RequiredArgsConstructor
 @AutoConfiguration
+@EnableScheduling
 @EnableConfigurationProperties(BobsonClientProperties.class)
 @Conditional(BobsonClientCondition.class)
 public class BobsonClientAutoConfiguration {
 
+    private final ApplicationContext context;
     private final BobsonClientProperties properties;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -87,6 +92,11 @@ public class BobsonClientAutoConfiguration {
             .apiClient(bobSonApiClient())
             .eventPublisher(eventPublisher)
             .build();
+    }
+
+    @Bean
+    public BobsonLifecycle lifecycle() {
+        return new BobsonLifecycle(context);
     }
 
 }

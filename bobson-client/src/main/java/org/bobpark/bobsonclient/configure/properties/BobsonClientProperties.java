@@ -1,40 +1,41 @@
 package org.bobpark.bobsonclient.configure.properties;
 
+import java.util.UUID;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+@ToString
+@Getter
+@Setter
 @ConfigurationProperties("bobson.client")
 public class BobsonClientProperties {
 
-    private boolean enabled;
+    /**
+     * Enabled Bobson Client
+     */
+    private boolean enabled = true;
+
+    /**
+     * Bobson host
+     */
     private String host;
+
+    /**
+     * Bobson Client instance id (default random uuid)
+     */
     private String instanceId;
 
+    /**
+     * time to fetch event. (ms).
+     */
+    private Long fetchTimeMs = 1_000L;
+
     public BobsonClientProperties() {
-        this.enabled = true;
         this.host = "http://localhost:9090";
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getInstanceId() {
-        return instanceId;
-    }
-
-    public void setInstanceId(String instanceId) {
-        this.instanceId = instanceId;
+        this.instanceId = UUID.randomUUID().toString();
     }
 }

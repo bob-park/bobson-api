@@ -1,12 +1,14 @@
 package org.bobpark.bobsonclient.event.client.impl;
 
+import java.net.URI;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import org.bobpark.bobsonclient.configure.properties.BobsonClientProperties;
 import org.bobpark.bobsonclient.event.client.BobSonApiClient;
@@ -21,7 +23,7 @@ import org.bobpark.bobsonclient.event.exception.FailedPushEventException;
 public class DefaultEventStoreApiClient implements BobSonApiClient {
 
     private static final String PUSH_API = "/event";
-    private static final String FETCH_API = "/event/fetch/{eventName}";
+    private static final String FETCH_API = "/event/fetch";
 
     private final BobsonClientProperties properties;
     private final RestTemplate restTemplate;
@@ -32,39 +34,42 @@ public class DefaultEventStoreApiClient implements BobSonApiClient {
         DefaultCreateEventRequest createRequest = (DefaultCreateEventRequest)pushData;
 
         RequestEntity<DefaultCreateEventRequest> requestEntity =
-            RequestEntity.post(properties.getHost() + PUSH_API)
+            RequestEntity.post(includeUri(PUSH_API))
                 .body(createRequest);
 
-        DefaultEventResponse body = request(requestEntity);
-
-        log.debug("pushed event data. (id={})", body.getId());
-
-        return body;
+        return request(requestEntity);
     }
 
     @Override
     public EventResponse fetch(String eventName) {
 
+        URI uri =
+            UriComponentsBuilder.fromUriString(includeUri(FETCH_API))
+                .queryParam("eventName", eventName)
+                .build()
+                .toUri();
+
         RequestEntity<Void> requestEntity =
-            RequestEntity.get(FETCH_API, eventName)
+            RequestEntity.get(uri)
                 .build();
 
-        DefaultEventResponse body = request(requestEntity);
+        return request(requestEntity);
 
-        log.debug("fetch event. (id={})", body.getId());
-
-        return body;
     }
 
     private DefaultEventResponse request(RequestEntity<?> requestEntity) {
-        ResponseEntity<DefaultEventResponse> response = restTemplate.exchange(requestEntity,
-            DefaultEventResponse.class);
+        ResponseEntity<DefaultEventResponse> response =
+            restTemplate.exchange(requestEntity, DefaultEventResponse.class);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new FailedPushEventException();
         }
 
         return response.getBody();
+    }
+
+    private String includeUri(String uri) {
+        return properties.getHost() + uri;
     }
 
 }
