@@ -3,11 +3,13 @@ package org.bobpark.bobsonclient.event.client.model.impl;
 import java.util.Map;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.ToString;
 
 import org.bobpark.bobsonclient.event.client.model.CreateEventRequest;
 
 @ToString
+@Getter
 public class DefaultCreateEventRequest implements CreateEventRequest {
 
     private final String eventName;
@@ -20,17 +22,4 @@ public class DefaultCreateEventRequest implements CreateEventRequest {
         this.eventData = eventData;
         this.createdModuleName = createdModuleName;
     }
-
-    public String eventName() {
-        return eventName;
-    }
-
-    public Map<String, Object> eventData() {
-        return eventData;
-    }
-
-    public String createdModuleName() {
-        return createdModuleName;
-    }
-
 }

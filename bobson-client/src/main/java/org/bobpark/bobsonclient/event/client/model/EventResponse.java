@@ -4,31 +4,31 @@ import java.util.Map;
 
 public interface EventResponse {
 
-    String id();
+    String getId();
 
-    String eventName();
+    String getEventName();
 
-    Map<String, Object> eventData();
+    Map<String, Object> getEventData();
 
-    EventStatus status();
+    EventStatus getStatus();
 
-    default String createdModuleName() {
+    default String getCreatedModuleName() {
         return null;
     }
 
-    default String createdIpAddress() {
+    default String getCreatedIpAddress() {
         return null;
     }
 
-    default String executedModuleName() {
+    default String getExecutedModuleName() {
         return null;
     }
 
-    default String executedIpAddress() {
+    default String getExecutedIpAddress() {
         return null;
     }
 
-    default String message() {
+    default String getMessage() {
         return null;
     }
 }

@@ -4,9 +4,9 @@ import java.util.Map;
 
 public interface CreateEventRequest {
 
-    String eventName();
+    String getEventName();
 
-    Map<String, Object> eventData();
+    Map<String, Object> getEventData();
 
-    String createdModuleName();
+    String getCreatedModuleName();
 }

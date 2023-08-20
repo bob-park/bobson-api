@@ -9,8 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,7 +41,10 @@ public class BobsonClientAutoConfiguration {
 
     @Bean
     public RestTemplate bobsonClientRestTemplate() {
-        return new RestTemplate();
+        return new RestTemplateBuilder()
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+            .build();
     }
 
     @Bean
@@ -71,7 +77,7 @@ public class BobsonClientAutoConfiguration {
     }
 
     @Bean
-    public EventCommandManager eventCommandManager(ObjectMapper om){
+    public EventCommandManager eventCommandManager(ObjectMapper om) {
         return new EventCommandManager(om, properties, bobSonApiClient());
     }
 

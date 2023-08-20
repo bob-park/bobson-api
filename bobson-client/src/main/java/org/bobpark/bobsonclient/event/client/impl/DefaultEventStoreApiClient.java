@@ -3,6 +3,7 @@ package org.bobpark.bobsonclient.event.client.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -31,6 +32,8 @@ public class DefaultEventStoreApiClient implements BobSonApiClient {
 
         RequestEntity<DefaultCreateEventRequest> requestEntity =
             RequestEntity.post(properties.getHost() + PUSH_API)
+                // .contentType(MediaType.APPLICATION_JSON)
+                // .accept(MediaType.APPLICATION_JSON)
                 .body(createRequest);
 
         ResponseEntity<DefaultEventResponse> response = restTemplate.exchange(requestEntity,
@@ -42,7 +45,7 @@ public class DefaultEventStoreApiClient implements BobSonApiClient {
 
         DefaultEventResponse body = response.getBody();
 
-        log.debug("pushed event data. (id={})", body.id());
+        log.debug("pushed event data. (id={})", body.getId());
 
         return body;
     }
