@@ -11,8 +11,8 @@ import org.bobpark.bobsonclient.sample.domain.cqrs.event.CreatedSampleEvent;
 @Aggregate
 public class SampleAggregate {
 
-    @CommandHandler("CreatedSampleEvent")
-    public void handleCreateSample(CreateSampleCommand command){
+    @CommandHandler(pushEvent = CreatedSampleEvent.class)
+    public void handleCreateSample(CreateSampleCommand command) {
 
     }
 
