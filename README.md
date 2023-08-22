@@ -123,3 +123,11 @@ Host: localhost:9090
 | `Aggregate`            | aggregate 로 bobson client annotation 을 사용시 class 에 선언해야함                     | class  |    |
 | `CommandHandler`       | command handler 로 method 에 선언시 해당 method 실행시 bobson server api 에 event 가 추가됨 | method |    |
 | `EventSourcingHandler` | event 처리시 환경설정된 fetch 주기마다 해당 method 가 실행됨                                   | method |    |
+
+## Docker Image 정리
+
+### repository or tag 가 none 인 image 삭제
+docker rmi $(docker images -q --filter "dangling=true")
+
+### 패턴을 이용한 삭제
+docker rmi $(docker images -q --filter "reference=hwpark/bobson-server-api/0.0.*")
