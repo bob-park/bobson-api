@@ -4,8 +4,14 @@ services:
   bobson-server-api:
     container_name: bobson-server-api
     image: ghcr.io/bob-park/bobson-api/bobson-server-api
-    platform: linux/amd64
-    build: ./bobson-server-api
+    privileged: true
+    build:
+      context: ./bobson-server-api
+      dockerfile: ./Dockerfile
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64
     environment:
       logs_level: debug
       logs_path: /root/app/logs
