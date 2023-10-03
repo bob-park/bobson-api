@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,9 +32,10 @@ public class EventController {
         return eventService.createEvent(createRequest);
     }
 
-    @GetMapping(path = "fetch/{eventName}")
-    public EventResponse fetch(@PathVariable String eventName) {
-        return eventService.fetch(eventName);
+    @GetMapping(path = "fetch")
+    public EventResponse fetch(@RequestParam("eventName") String eventName,
+        @RequestParam("moduleName") String moduleName) {
+        return eventService.fetch(eventName, moduleName);
     }
 
     @PutMapping(path = "complete/{eventId}")

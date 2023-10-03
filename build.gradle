@@ -1,49 +1,4 @@
-plugins {
-    id 'org.springframework.boot' version '3.1.2'
-    id 'java'
-    id "org.asciidoctor.jvm.convert" version "3.3.2"
-}
-
-repositories {
-    mavenCentral()
-}
-
-bootJar.enabled = false
-
 subprojects {
-
-    ext {
-        springCloudVersion = '3.0.4'
-        springCloudNetflixVersion = '3.0.4'
-    }
-
-    apply plugin: 'java'
-    apply plugin: 'org.asciidoctor.jvm.convert'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
-
-    sourceCompatibility = 17
-
-    configurations {
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-
-        testClasses {
-            extendsFrom(testImplementation)
-        }
-
-        asciidoctorExt
-    }
-
-    task testJar(type: Jar) {
-        archiveClassifier.set('test')
-        from sourceSets.test.output
-    }
-
-    artifacts {
-        testClasses testJar
-    }
 
     repositories {
         mavenCentral()
@@ -58,97 +13,9 @@ subprojects {
         }
     }
 
-    ext {
-        set('springCloudVersion', "2022.0.2")
-
-        set('snippetsDir', file("build/generated-snippets"))
-
-        queryDslVersion = "5.0.0"
-
-        springCloudNetflixVersion = "4.0.1"
-    }
 
     dependencies {
-        developmentOnly 'org.springframework.boot:spring-boot-devtools'
-        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-        testImplementation 'org.springframework.security:spring-security-test'
 
-        implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
-        // spring cloud sleuth
-//        implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
-
-        // spring cloud zipkin
-//        implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
-
-        // spring cloud bootstrap
-        implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
-
-        implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
-        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-
-        // lombok
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        testCompileOnly 'org.projectlombok:lombok'
-        testAnnotationProcessor 'org.projectlombok:lombok'
-
-        // guava
-        implementation 'com.google.guava:guava:31.1-jre'
-        implementation 'com.google.code.gson:gson:2.9.0'
-
-        // apache commons
-        implementation 'org.apache.commons:commons-lang3:3.12.0'
-        implementation 'commons-io:commons-io:2.11.0'
-
-        implementation 'io.micrometer:micrometer-registry-prometheus'
-
-        // core
-        implementation 'org.bobpark:bob-core-spring-boot-starter:0.0.2'
-    }
-
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-        }
-    }
-
-    tasks.named('test') {
-        outputs.dir snippetsDir
-        useJUnitPlatform()
-    }
-
-    tasks.named('asciidoctor') {
-        inputs.dir snippetsDir
-        dependsOn test
-    }
-
-    asciidoctor {
-        sourceDir 'src/docs/asciidoc'
-
-        inputs.dir snippetsDir
-        configurations 'asciidoctorExt'
-        attributes 'snippets': snippetsDir
-
-        dependsOn test
-
-        baseDirFollowsSourceDir()
-    }
-
-    asciidoctor.doFirst {
-        delete file('src/main/resources/static/docs')
-    }
-
-    tasks.register('copyDocument', Copy) {
-        dependsOn asciidoctor
-        from file("build/docs/asciidoc")
-        into file("src/main/resources/static/docs")
-    }
-
-    build {
-        dependsOn copyDocument
     }
 
 }

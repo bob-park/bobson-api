@@ -1,11 +1,11 @@
-package org.bobpark.bobsonserverapi;
+package org.bobpark.bobsonclient;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
 // @SpringBootTest
-class ServerApplicationTests {
+class ClientApplicationTests {
 
     @Test
     void contextLoads() {

@@ -9,7 +9,7 @@ public interface EventService {
 
     EventResponse createEvent(CreateEventRequest createRequest);
 
-    EventResponse fetch(String eventName);
+    EventResponse fetch(String eventName, String moduleName);
 
     EventResponse complete(EventId id, CompleteEventRequest completeRequest);
 }
